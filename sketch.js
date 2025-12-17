@@ -46,7 +46,7 @@ function setup() {
 	deleteButton.mouseClicked(clearWork);
 
 	// Make tool select dropdown.
-	toolSelect = createSelect();
+    toolSelect = createSelect();
 	toolSelect.position(84, 23);
 	toolSelect.option('Select brush');
 	toolSelect.option('Line');
@@ -108,7 +108,7 @@ function setup() {
 	jitterVal = jSlider.value();
 
 	// Make a slider that adjusts scale variation value.
-	varSlider = createSlider(0, 100, 50);
+    varSlider = createSlider(0, 100, 50);
 	varSlider.position(1185, 27);
     varSlider.style('width', '120px')
 	scaleVar = varSlider.value();
@@ -257,16 +257,21 @@ function warmColorCycle(t) {
 	return c;
 }
 
+// Prevent drawing on the toolbar.
+function canDrawHere(y) {
+    return y > 55;
+}
+
 function drawWithLine() {
 	strokeWeight(thickness);
 	stroke(drawCol);
 
 	if (mode == 'Freehand') {
-		if (!mouseIsPressed) {
+		if (!mouseIsPressed && canDrawHere(mouseY)) {
 			line(pmouseX, pmouseY, mouseX, mouseY);
 		}
 	} else {
-		if (mouseIsPressed) {
+		if (mouseIsPressed && canDrawHere(mouseY)) {
 			line(pmouseX, pmouseY, mouseX, mouseY);
 		}
 	}
@@ -275,9 +280,9 @@ function drawWithLine() {
 
 function drawWithShape() {
 	if (mode == 'Freehand') {
-		if (!mouseIsPressed) callTool();
+		if (!mouseIsPressed && canDrawHere(mouseY)) callTool();
 	} else {
-		if (mouseIsPressed) callTool();
+		if (mouseIsPressed && canDrawHere(mouseY)) callTool();
 	}
 	hueVal = (hueVal + 1) % 360;
 }
@@ -443,10 +448,17 @@ function oppColor() {
 	return oppCol;
 }
 
+// Take a screenshot if the spacebar is pressed.
 function keyPressed() {
 	if (keyCode == 32) {
 		save('magic-brush.png');
 	}
+}
+
+// Adjust canvas if browser window is resized.
+function windowResize() {
+    resizeCanvas(windowWidth, windowHeight);
+    updateTBHeight();
 }
 
 function clearWork() {
