@@ -19,9 +19,9 @@ Date 12/18/25
 To run this program on your own machine:
 1) Download the files
 2) Navigate to where index.html is stored
-3) Open index.html in your browser*
+3) Open index.html in your browser**
 
-* Note: For best experience and to prevent toolbar difficulties, I would strongly advise using the Magic Easel with your browser in full screen mode.
+** Note: For best experience and to prevent toolbar difficulties, I would strongly advise using the Magic Easel with your browser in full screen mode.
 
 # Usage Tools and Controls
 **Clear**  This button erases the canvas entirely for the user to restart.
