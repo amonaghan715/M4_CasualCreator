@@ -24,9 +24,9 @@ To run this program on your own machine:
 ** Note: For best experience and to prevent toolbar difficulties, I would strongly advise using the Magic Easel with your browser in full screen mode.
 
 # Usage Tools and Modes
-**Clear** This button erases the canvas entirely for the user to restart.
+**Clear**: This button erases the canvas entirely for the user to restart.
 
-**Select brush** This dropdown contains all of the tool options for the user to draw with:
+**Select brush**: This dropdown contains all of the tool options for the user to draw with:
 - Line - Draws a line following the mouse.
 - Dots - Draws dots following the mouse.
 - Sparkles - Draw sparkles following the mouse. The sparkles are drawn using bezier vertices.
