@@ -23,7 +23,7 @@ To run this program on your own machine:
 
 * Note: For best experience and to prevent toolbar difficulties, I would strongly advise using the Magic Easel with your browser in full screen mode.
 
-# Usage Tools and Modes
+# Usage Tools and Controls
 **Clear**  This button erases the canvas entirely for the user to restart.
 
 **Brush selection**  This dropdown contains all of the tool options for the user to draw with:
