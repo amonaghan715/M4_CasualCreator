@@ -63,7 +63,7 @@ function setup() {
 	modeSelect.position(192, 23);
 	modeSelect.option('Select draw mode');
 	modeSelect.option('Draw on click');
-	modeSelect.option('Freehand');
+	modeSelect.option('Stop on click');
 	mode = modeSelect.selected('Select draw mode');
 
 	// Make color mode dropdown.
@@ -266,7 +266,7 @@ function drawWithLine() {
 	strokeWeight(thickness);
 	stroke(drawCol);
 
-	if (mode == 'Freehand') {
+	if (mode == 'Stop on click') {
 		if (!mouseIsPressed && canDrawHere(mouseY)) {
 			line(pmouseX, pmouseY, mouseX, mouseY);
 		}
@@ -279,7 +279,7 @@ function drawWithLine() {
 }
 
 function drawWithShape() {
-	if (mode == 'Freehand') {
+	if (mode == 'Stop on click') {
 		if (!mouseIsPressed && canDrawHere(mouseY)) callTool();
 	} else {
 		if (mouseIsPressed && canDrawHere(mouseY)) callTool();
