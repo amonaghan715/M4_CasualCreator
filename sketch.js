@@ -75,7 +75,7 @@ function setup() {
 	colorSelect.option('Cool gradient');
 	colorSelect.option('Warm gradient');
 	colorSelect.option('Random colors');
-	coloring = colorSelect.selected('Color adjustment')
+	coloring = colorSelect.selected('Change background')
 
 	// Make slider that adjusts brush thickness.
 	weightSlider = createSlider(1, 200, 20);
