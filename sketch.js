@@ -1,6 +1,8 @@
 let toolSelect;
 let tool;
-let colorSelect;
+let modeSelect;
+let mode;
+let colorSelect
 let coloring;
 let weightSlider;
 let thickness;
@@ -27,16 +29,20 @@ let jitterTools = ['Dots', 'Sparkles', 'Triangles', 'Squares', 'Flowers'];
 let drawCol;
 let hueVal = 0;
 let overallAngle = 0;
+let sliderW;
+let 
 
 /*TODO:
-Do vine
 Undo button
+Adjust slider pos/width for changing window
 */
 
 function setup() {
 	createCanvas(windowWidth, windowHeight);
 	angleMode(DEGREES);
 	background(backR, backG, backB);
+
+    let sliderW = (windowWidth-470) / 8.08;
 
 	// Create button to clear canvas.
 	let deleteButton = createButton('Clear');
@@ -48,7 +54,6 @@ function setup() {
 	toolSelect.position(84, 23);
 	toolSelect.option('Select brush');
 	toolSelect.option('Line');
-	toolSelect.option('Vine');
 	toolSelect.option('Dots');
 	toolSelect.option('Sparkles');
 	toolSelect.option('Triangles');
@@ -79,31 +84,37 @@ function setup() {
 	// Make slider that adjusts brush thickness.
 	weightSlider = createSlider(1, 200, 20);
 	weightSlider.position(485, 27);
+    weightSlider.style('width', `${sliderW}px`)
 	thickness = weightSlider.value();
 
 	// Make slider that adjusts red value.
 	rSlider = createSlider(0, 255, 0);
 	rSlider.position(635, 27);
+    rSlider.style('width', `${sliderW}px`)
 	sRed = rSlider.value();
 
 	// Make slider that adjusts green value.
 	gSlider = createSlider(0, 255, 0);
 	gSlider.position(785, 27);
+    gSlider.style('width', `${sliderW}px`)
 	sGreen = gSlider.value();
 
 	// Make slider that adjusts blue value.
 	bSlider = createSlider(0, 255, 0);
 	bSlider.position(935, 27);
+    bSlider.style('width', `${sliderW}px`)
 	sBlue = bSlider.value();
 
 	// Make a slider that adjusts jitter value.
 	jSlider = createSlider(0, 100, 0);
 	jSlider.position(1085, 27);
+    jSlider.style('width', `${sliderW}px`)
 	jitterVal = jSlider.value();
 
 	// Make a slider that adjusts scale variation value.
 	varSlider = createSlider(0, 100, 50);
 	varSlider.position(1235, 27);
+    varSlider.style('width', `${sliderW}px`)
 	scaleVar = varSlider.value();
 
 	writeStart();
@@ -158,9 +169,6 @@ function draw() {
 
 	// Run drawing function based on tool selection.
 	if (tool == 'Line' || tool == 'Eraser') {
-		drawWithLine();
-		needJitter = false;
-	} else if (tool == 'Vine') {
 		drawWithLine();
 		needJitter = false;
 	} else if (jitterTools.includes(tool)) {
@@ -267,10 +275,6 @@ function drawWithLine() {
 		}
 	}
 	hueVal = (hueVal + 1) % 360;
-}
-
-function drawWithVine() {
-	
 }
 
 function drawWithShape() {
