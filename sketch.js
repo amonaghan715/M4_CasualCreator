@@ -29,8 +29,6 @@ let jitterTools = ['Dots', 'Sparkles', 'Triangles', 'Squares', 'Flowers'];
 let drawCol;
 let hueVal = 0;
 let overallAngle = 0;
-let sliderW;
-let 
 
 /*TODO:
 Undo button
@@ -41,8 +39,6 @@ function setup() {
 	createCanvas(windowWidth, windowHeight);
 	angleMode(DEGREES);
 	background(backR, backG, backB);
-
-    let sliderW = (windowWidth-470) / 8.08;
 
 	// Create button to clear canvas.
 	let deleteButton = createButton('Clear');
@@ -84,37 +80,37 @@ function setup() {
 	// Make slider that adjusts brush thickness.
 	weightSlider = createSlider(1, 200, 20);
 	weightSlider.position(485, 27);
-    weightSlider.style('width', `${sliderW}px`)
+    weightSlider.style('width', '120px')
 	thickness = weightSlider.value();
 
 	// Make slider that adjusts red value.
 	rSlider = createSlider(0, 255, 0);
-	rSlider.position(635, 27);
-    rSlider.style('width', `${sliderW}px`)
+	rSlider.position(625, 27);
+    rSlider.style('width', '120px')
 	sRed = rSlider.value();
 
 	// Make slider that adjusts green value.
 	gSlider = createSlider(0, 255, 0);
-	gSlider.position(785, 27);
-    gSlider.style('width', `${sliderW}px`)
+	gSlider.position(765, 27);
+    gSlider.style('width', '120px')
 	sGreen = gSlider.value();
 
 	// Make slider that adjusts blue value.
 	bSlider = createSlider(0, 255, 0);
-	bSlider.position(935, 27);
-    bSlider.style('width', `${sliderW}px`)
+	bSlider.position(905, 27);
+    bSlider.style('width', '120px')
 	sBlue = bSlider.value();
 
 	// Make a slider that adjusts jitter value.
 	jSlider = createSlider(0, 100, 0);
-	jSlider.position(1085, 27);
-    jSlider.style('width', `${sliderW}px`)
+	jSlider.position(1045, 27);
+    jSlider.style('width', '120px')
 	jitterVal = jSlider.value();
 
 	// Make a slider that adjusts scale variation value.
 	varSlider = createSlider(0, 100, 50);
-	varSlider.position(1235, 27);
-    varSlider.style('width', `${sliderW}px`)
+	varSlider.position(1185, 27);
+    varSlider.style('width', '120px')
 	scaleVar = varSlider.value();
 
 	writeStart();
@@ -133,9 +129,7 @@ function draw() {
 	rect(0, 0, windowWidth, 55);
 
 	// Adjust values to coloring mode selection.
-	if (tool == 'Eraser') {
-		drawCol = color(backR, backG, backB);
-	} else if (coloring == 'Change background') {
+	if (coloring == 'Change background') {
 		tool = toolSelect.selected('Select brush');
 		backR = rSlider.value();
 		backG = gSlider.value();
@@ -146,7 +140,9 @@ function draw() {
 		noStroke();
 		fill(255);
 		rect(0, 0, windowWidth, 55);
-	} else if (coloring == 'Rainbow gradient') {
+	} else if (tool == 'Eraser') {
+        drawCol = color(backR, backG, backB);
+    }else if (coloring == 'Rainbow gradient') {
 		push();
 		colorMode(HSB, 360, 100, 100);
 		drawCol = color(hueVal, 90, 100);
@@ -191,14 +187,14 @@ function draw() {
 	textSize(11);
 	textAlign(LEFT);
 	text('Thickness: ' + thickness, 485, 18)
-	text('Red: ' + sRed, 635, 18);
-	text('Green: ' + sGreen, 785, 18);
-	text('Blue: ' + sBlue, 935, 18);
-	text('Jitter: ' + jitterVal, 1085, 18);
-	text('Scale variation: ' + scaleVar, 1235, 18);
+	text('Red: ' + sRed, 625, 18);
+	text('Green: ' + sGreen, 765, 18);
+	text('Blue: ' + sBlue, 905, 18);
+	text('Jitter: ' + jitterVal, 1045, 18);
+	text('Scale variation: ' + scaleVar, 1185, 18);
 
 	// Draw color preview circle if colors are adjustable, erase if not.
-	if (coloring == 'Color adjustment') {
+	if (coloring == 'Color adjustment' || coloring == 'Change background') {
 		strokeWeight(1);
 		stroke(0);
 		fill(sRed, sGreen, sBlue);
