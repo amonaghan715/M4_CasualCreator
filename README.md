@@ -2,6 +2,7 @@
 Github repo link: https://github.com/amonaghan715/M4_CasualCreator.git
 
 **The Magic Easel**
+
 Welcome to the Magic Easel, your tool for relaxing and creating beautiful art! The Magic Easel is a tool to help users draw anytyhing they want using its built in brush and color tools. The selectors and sliders can be combined to create thousands of different drawing experiences, so users can play and draw to their hearts' content. A user can draw anything they want, erase if they make a mistake, clear the canvas if they feel like starting over, or take a screenshot to show off their amazing creation.
 
 Author: Anna Monaghan
