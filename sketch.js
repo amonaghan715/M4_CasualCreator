@@ -10,7 +10,6 @@ let thickness;
 let backR = 0;
 let backG = 0;
 let backB = 0;
-
 let rSlider;
 let gSlider;
 let bSlider;
@@ -25,15 +24,11 @@ let scaleVar;
 
 let needJitter = false;
 let jitterTools = ['Dots', 'Sparkles', 'Triangles', 'Squares', 'Flowers'];
+let lineTools = ['Line', 'Eraser'];
 
 let drawCol;
 let hueVal = 0;
 let overallAngle = 0;
-
-/*TODO:
-Undo button
-Adjust slider pos/width for changing window
-*/
 
 function setup() {
 	createCanvas(windowWidth, windowHeight);
@@ -42,10 +37,10 @@ function setup() {
 
 	// Create button to clear canvas.
 	let deleteButton = createButton('Clear');
-	deleteButton.position(20, 21);
+	deleteButton.position(20, 23);
 	deleteButton.mouseClicked(clearWork);
 
-	// Make tool select dropdown.
+	// Make tool dropdown.
     toolSelect = createSelect();
 	toolSelect.position(84, 23);
 	toolSelect.option('Select brush');
@@ -58,7 +53,7 @@ function setup() {
 	toolSelect.option('Eraser');
 	tool = toolSelect.selected('Select brush');
 
-	// Made draw mode select dropdown.
+	// Made draw mode dropdown.
 	modeSelect = createSelect();
 	modeSelect.position(192, 23);
 	modeSelect.option('Select draw mode');
@@ -77,37 +72,37 @@ function setup() {
 	colorSelect.option('Random colors');
 	coloring = colorSelect.selected('Change background')
 
-	// Make slider that adjusts brush thickness.
+	// Make slider for brush thickness.
 	weightSlider = createSlider(1, 200, 20);
 	weightSlider.position(485, 27);
     weightSlider.style('width', '120px')
 	thickness = weightSlider.value();
 
-	// Make slider that adjusts red value.
+	// Make slider for red value.
 	rSlider = createSlider(0, 255, 0);
 	rSlider.position(625, 27);
     rSlider.style('width', '120px')
 	sRed = rSlider.value();
 
-	// Make slider that adjusts green value.
+	// Make slider for green value.
 	gSlider = createSlider(0, 255, 0);
 	gSlider.position(765, 27);
     gSlider.style('width', '120px')
 	sGreen = gSlider.value();
 
-	// Make slider that adjusts blue value.
+	// Make slider for blue value.
 	bSlider = createSlider(0, 255, 0);
 	bSlider.position(905, 27);
     bSlider.style('width', '120px')
 	sBlue = bSlider.value();
 
-	// Make a slider that adjusts jitter value.
+	// Make a slider for jitter value.
 	jSlider = createSlider(0, 100, 0);
 	jSlider.position(1045, 27);
     jSlider.style('width', '120px')
 	jitterVal = jSlider.value();
 
-	// Make a slider that adjusts scale variation value.
+	// Make a slider for scale variation value.
     varSlider = createSlider(0, 100, 50);
 	varSlider.position(1185, 27);
     varSlider.style('width', '120px')
@@ -128,7 +123,7 @@ function draw() {
 	fill(255);
 	rect(0, 0, windowWidth, 55);
 
-	// Adjust values to coloring mode selection.
+	// Adjust drawCol according to coloring mode selection.
 	if (coloring == 'Change background') {
 		tool = toolSelect.selected('Select brush');
 		backR = rSlider.value();
@@ -136,13 +131,14 @@ function draw() {
 		backB = bSlider.value();
 		background(backR, backG, backB);
 
-		// Redraw tool panel on new background.
+		// Redraw tool panel and start message on new background.
+        writeStart();
 		noStroke();
 		fill(255);
 		rect(0, 0, windowWidth, 55);
 	} else if (tool == 'Eraser') {
         drawCol = color(backR, backG, backB);
-    }else if (coloring == 'Rainbow gradient') {
+    } else if (coloring == 'Rainbow gradient') {
 		push();
 		colorMode(HSB, 360, 100, 100);
 		drawCol = color(hueVal, 90, 100);
@@ -164,7 +160,7 @@ function draw() {
 	}
 
 	// Run drawing function based on tool selection.
-	if (tool == 'Line' || tool == 'Eraser') {
+	if (lineTools.includes(tool)) {
 		drawWithLine();
 		needJitter = false;
 	} else if (jitterTools.includes(tool)) {
@@ -182,6 +178,7 @@ function draw() {
 		scaleVar = varSlider.value();
 	}
 
+    // Display slider labels.
 	noStroke();
 	fill(20);
 	textSize(11);
@@ -203,7 +200,7 @@ function draw() {
 		stroke(255);
 		fill(255);
 	}
-	circle(windowWidth - 40, 24, 30);
+	circle(windowWidth - 40, 27, 30);
 }
 
 // Display the start message until canvas is cleared.
@@ -243,6 +240,11 @@ function coolColorCycle(t) {
 	return c;
 }
 
+// Prevent drawing on the toolbar.
+function canDrawHere(y) {
+    return y > 55;
+}
+
 // Use HSB mode to cycle through warm colors, skipping ugly/muddy shades.
 function warmColorCycle(t) {
 	push();
@@ -255,11 +257,6 @@ function warmColorCycle(t) {
 	pop();
 
 	return c;
-}
-
-// Prevent drawing on the toolbar.
-function canDrawHere(y) {
-    return y > 55;
 }
 
 function drawWithLine() {
@@ -287,46 +284,36 @@ function drawWithShape() {
 	hueVal = (hueVal + 1) % 360;
 }
 
+// Call the correct shape function based on the current tool.
 function callTool() {
-	if (tool == 'Dots') dot();
-	else if (tool == 'Sparkles') sparkle();
-	else if (tool == 'Triangles') drawTriangle();
-	else if (tool == 'Squares') drawSquare();
-	else if (tool == 'Flowers') flower();
+    // Create offset variables for x and y based on jitter percentage.
+    jitterVal = jSlider.value();
+    let operator = random([-1, 1]);
+	let offsetX = random(0, windowWidth / 5) * (jitterVal / 100) * operator;
+	let offsetY = random(0, windowHeight / 5) * (jitterVal / 100) * operator;
+
+	if (tool == 'Dots') dot(offsetX, offsetY);
+	else if (tool == 'Sparkles') sparkle(offsetX, offsetY);
+	else if (tool == 'Triangles') drawTriangle(offsetX, offsetY);
+	else if (tool == 'Squares') drawSquare(offsetX, offsetY);
+	else if (tool == 'Flowers') flower(offsetX, offsetY);
 }
 
-function dot() {
-	// Create offset variables for x and y based on jitter percentage.
-	jitterVal = jSlider.value();
-	let offsetX = random(0, windowWidth / 5) * (jitterVal / 100);
-	let offsetY = random(0, windowHeight / 5) * (jitterVal / 100);
-
-	let operator = random([-1, 1]);
-	offsetX = offsetX * operator;
-	offsetY = offsetY * operator;
-
+function dot(offX, offY) {
 	// Pick a random scale for the dot within the range set by the slider.
 	let variation = varSlider.value() / 100;
 	let dotScale = random(1-variation, 1);
 
 	noStroke();
 	fill(drawCol);
-	circle(mouseX + offsetX, mouseY + offsetY, thickness * dotScale)
+	circle(mouseX + offX, mouseY + offY, thickness * dotScale)
 }
 
-function sparkle() {
-	jitterVal = jSlider.value();
-	let offsetX = random(0, windowWidth / 5) * (jitterVal / 100);
-	let offsetY = random(0, windowHeight / 5) * (jitterVal / 100);
-
-	let operator = random([-1, 1]);
-	offsetX = offsetX * operator;
-	offsetY = offsetY * operator;
-	
+function sparkle(offX, offY) {
 	push();
 
 	// Move all drawing commands to follow mouse position.
-	translate(mouseX + offsetX, mouseY + offsetY);
+	translate(mouseX + offX, mouseY + offY);
 
 	let variation = varSlider.value() / 100;
 	let starScale = (thickness / 100) * random(1-variation, 1);
@@ -346,21 +333,13 @@ function sparkle() {
 	pop();
 }
 
-function drawTriangle() {
-	jitterVal = jSlider.value();
-	let offsetX = random(0, windowWidth / 5) * (jitterVal / 100);
-	let offsetY = random(0, windowHeight / 5) * (jitterVal / 100);
-
-	let operator = random([-1, 1]);
-	offsetX = offsetX * operator;
-	offsetY = offsetY * operator;
-
+function drawTriangle(offX, offY) {
 	let variation = varSlider.value() / 100;
 	let triScale = (thickness / 100) * random(1-variation, 1);
 
 	push();
 	
-	translate(mouseX + offsetX, mouseY + offsetY);
+	translate(mouseX + offX, mouseY + offY);
 	scale(triScale);
 	
 	noStroke();
@@ -370,38 +349,22 @@ function drawTriangle() {
 	pop();
 }
 
-function drawSquare() {
-	jitterVal = jSlider.value();
-	let offsetX = random(0, windowWidth / 3) * (jitterVal / 100);
-	let offsetY = random(0, windowHeight / 3) * (jitterVal / 100);
-
-	let operator = random([-1, 1]);
-	offsetX = offsetX * operator;
-	offsetY = offsetY * operator;
-
+function drawSquare(offX, offY) {
 	let variation = varSlider.value() / 100;
 	let dotScale = random(1-variation, 1);
 
 	noStroke();
 	fill(drawCol);
-	square(mouseX + offsetX, mouseY + offsetY, thickness * dotScale)
+	square(mouseX + offX, mouseY + offY, thickness * dotScale)
 }
 
-function flower() {
-	jitterVal = jSlider.value();
-	let offsetX = random(0, windowWidth / 5) * (jitterVal / 100);
-	let offsetY = random(0, windowHeight / 5) * (jitterVal / 100);
-
-	let operator = random([-1, 1]);
-	offsetX = offsetX * operator;
-	offsetY = offsetY * operator;
-
+function flower(offX, offY) {
 	let variation = varSlider.value() / 100;
 	let circScale = (thickness / 100) * random(1-variation, 1);
 
 	push();
 
-	translate(mouseX + offsetX, mouseY + offsetY);
+	translate(mouseX + offX, mouseY + offY);
 	// Add rotation to make the flowers appear more variable.
 	rotate(overallAngle);
 	scale(circScale);
@@ -453,12 +416,6 @@ function keyPressed() {
 	if (keyCode == 32) {
 		save('magic-brush.png');
 	}
-}
-
-// Adjust canvas if browser window is resized.
-function windowResize() {
-    resizeCanvas(windowWidth, windowHeight);
-    updateTBHeight();
 }
 
 function clearWork() {
