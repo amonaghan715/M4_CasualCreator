@@ -76,6 +76,8 @@ This system was a challenge for me for a couple of reasons. First, I am very unf
 To create this system, I relied heavily on tutorials and reference pages found on the p5.js website:
 https://p5js.org
 
+Additionally, thank you to the people who tested the system in its earlier forms and helped me find bugs and make improvements. In particular: Amanda Cooney, Caroline Simmonds, Grace Monaghan, and Ben Mason.
+
 # AI Usage Statement
 ChatGPT 5.2 was used in this project to assist with equations for computing RGB and HSB values for colors and gradients.
 
