@@ -183,12 +183,12 @@ function draw() {
 	fill(20);
 	textSize(11);
 	textAlign(LEFT);
-	text('Thickness: ' + thickness, 485, 18)
+	text('Size: ' + thickness, 485, 18)
 	text('Red: ' + sRed, 625, 18);
 	text('Green: ' + sGreen, 765, 18);
 	text('Blue: ' + sBlue, 905, 18);
 	text('Jitter: ' + jitterVal, 1045, 18);
-	text('Scale variation: ' + scaleVar, 1185, 18);
+	text('Size variation: ' + scaleVar, 1185, 18);
 
 	// Draw color preview circle if colors are adjustable, erase if not.
 	if (coloring == 'Color adjustment' || coloring == 'Change background') {
