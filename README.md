@@ -16,6 +16,8 @@ Date 12/18/25
 
 **sketch.js**: A JavaScript file containing all of the code to create the Magic Easel.
 
+**PeerTesting**: A folder of png files. Each file contains a screenshot of work created with the system by the person in the file name. Each person sent me a picture of their work, and consented to have it featured in the project folder. My personal favorite is the muffin!
+
 # Installation Instructions and Requirements
 To run this program on your own machine:
 1) Download the files
